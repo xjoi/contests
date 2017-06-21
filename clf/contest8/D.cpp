@@ -1,5 +1,5 @@
-分类讨论大暴力...
-CF上面标签是Brute-Force
+/*分类讨论大暴力...
+CF上面标签是Brute-Force*/
 #include<cstdio>
 #include<iostream>
 using namespace std;
