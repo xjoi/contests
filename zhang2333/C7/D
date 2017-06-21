@@ -1,0 +1,130 @@
+/*
+这个评测机有毒。。数组开小了居然是TLE而不是RE。。
+害得我优化时间了很久。。 
+这个故事告诉我们不要轻易相信评测机。。 
+*/
+%:pragma GCC optimize(2)
+#include<cstdio>
+#include<iostream>
+#include<string>
+#include<cstring>
+#include<queue>
+#include<vector>
+#define xxx 100100
+#define yyy 5202333
+#define zz 15
+using namespace std;
+int n,m,a[xxx],dep[xxx],fa[xxx][zz+2];
+vector<int>r[xxx];
+int cnt,ch[yyy][2],siz[yyy],root[xxx],ans;
+
+void ins(int p1,int p2,int val)
+{
+	int c;
+	for (int i=zz;i>=0;i--)
+	{
+		c=(val>>i)&1;
+		ch[p1][c]=++cnt;
+		ch[p1][c^1]=ch[p2][c^1];
+		p1=ch[p1][c];
+		p2=ch[p2][c];
+		siz[p1]=siz[p2]+1;
+	}
+}
+
+void dfs(int x,int f)
+{
+	root[x]=++cnt;
+	ins(root[x],root[f],a[x]);
+	dep[x]=dep[f]+1;
+	for (int i=1;i<=zz;i++)
+		if (dep[x]>(1<<i))
+			fa[x][i]=fa[fa[x][i-1]][i-1];
+		else
+			break;
+	int y;
+	for (int i=r[x].size()-1;i>=0;i--)
+	{
+		y=r[x][i];
+		if (y==f) continue;
+		fa[y][0]=x;
+		dfs(y,x);
+	}
+}
+
+int get_lca(int x,int y)
+{
+	if (dep[x]<dep[y]) swap(x,y);
+	for (int i=zz;i>=0;i--)
+		if (dep[x]-(1<<i)>=dep[y])
+			x=fa[x][i];
+	if (x==y) return x;
+	for (int i=zz;i>=0;i--)
+		if (fa[x][i]!=fa[y][i])
+		{
+			x=fa[x][i];
+			y=fa[y][i];
+		}
+	return fa[x][0];
+}
+
+int que(int p1,int p2,int p3,int val)
+{
+	int turn=0,c;
+	for (int i=zz;i>=0;i--)
+	{
+		c=(val>>i)&1;
+		if (siz[ch[p1][c^1]]+siz[ch[p2][c^1]]>2*siz[ch[p3][c^1]])
+		{
+			p1=ch[p1][c^1];
+			p2=ch[p2][c^1];
+			p3=ch[p3][c^1];
+			turn|=1<<i;
+		}
+		else
+		{
+			p1=ch[p1][c];
+			p2=ch[p2][c];
+			p3=ch[p3][c];
+		}
+	}
+	return turn;
+}
+
+void realmain(int da_shen,int qing_shou_xia_wo_de_xi_gai)
+{
+	n=da_shen;m=qing_shou_xia_wo_de_xi_gai;
+	for (int i=1;i<=n;i++)
+		r[i].clear();
+	memset(ch,0,sizeof(ch));
+	memset(siz,0,sizeof(siz));
+	memset(fa,0,sizeof(fa));
+	memset(dep,0,sizeof(dep));
+	cnt=0;
+	for (int i=1;i<=n;i++)
+		scanf("%d",&a[i]);
+	int x,y,z,lca;
+	for (int i=1;i<n;i++)
+	{
+		scanf("%d%d",&x,&y);
+		r[x].push_back(y);
+		r[y].push_back(x);
+	}
+	dfs(1,0);
+	for (int i=1;i<=m;i++)
+	{
+		scanf("%d%d%d",&x,&y,&z);
+		//printf(" %d %d -lca:%d\n",x,y,get_lca(x,y));
+		lca=get_lca(x,y);
+		ans=max(a[lca]^z,que(root[x],root[y],root[lca],z));
+		//printf("      %d\n",que(root[x],root[y],root[lca],z));
+		printf("%d\n",ans);
+	}
+}
+
+int main()
+{
+	int I_am_ju_ruo,mo_bai_da_shen;
+    while (scanf("%d%d",&I_am_ju_ruo,&mo_bai_da_shen)==2)
+    	realmain(I_am_ju_ruo,mo_bai_da_shen);
+}
