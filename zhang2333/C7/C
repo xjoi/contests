@@ -1,0 +1,111 @@
+%:pragma GCC optimize(3)
+#include<cstdio>
+#include<iostream>
+#include<cstring>
+#include<algorithm>
+#include<vector>
+#include<queue>
+#include<cmath>
+#define inf 1000000000000
+using namespace std;
+
+double f[1010][1010],low[1010],f1[1010][1010],f2[1010][1010],m,x[1010],y[1010],must,ans;
+int used[1010]={0},n,mi,to[1010],die[1010][1010];
+vector<int>tr[1010];
+
+double prim()
+{
+	memset(used,0,sizeof(used));
+	double turn=0;
+	used[1]=1;
+	for (int i=1;i<=n;i++)
+	{
+		low[i]=f[1][i];
+		to[i]=1;
+	}
+	for (int nnd=1;nnd<n;nnd++)
+	{
+		mi=1;
+		for (int i=2;i<=n;i++)
+			if (!used[i]&&low[i]<low[mi])
+				mi=i;
+		turn+=low[mi];
+		f1[to[mi]][mi]=f1[mi][to[mi]]=inf;
+		die[to[mi]][mi]=die[mi][to[mi]]=1;
+		tr[mi].push_back(to[mi]);
+		tr[to[mi]].push_back(mi);
+		used[mi]=1;
+		for (int i=2;i<=n;i++)
+			if (!used[i])
+				if (low[i]>f[i][mi])
+				{
+					low[i]=f[i][mi];
+					to[i]=mi;
+				}
+	}
+	return turn;
+}
+
+void dfs1(int root,int x,int fa)
+{
+	int y;
+	for (int i=tr[x].size()-1;i>=0;i--)
+	{
+		y=tr[x][i];
+		if (y==fa) continue;
+		dfs1(root,y,x);
+		f1[root][x]=min(f1[root][x],f1[root][y]);
+	}
+}
+
+int st[1010],cnt;
+void dfs2(int x,int fa)
+{
+	int y,old;
+	st[++cnt]=x;
+	old=cnt;
+	for (int i=tr[x].size()-1;i>=0;i--)
+	{
+		y=tr[x][i];
+		if (y==fa) continue;
+		dfs2(y,x);
+	}
+	f2[fa][x]=f2[x][fa]=inf;
+	for (int i=old;i<=cnt;i++)
+		f2[fa][x]=f2[x][fa]=min(f2[fa][x],f1[st[i]][fa]);
+}
+
+void realmain()
+{
+	memset(die,0,sizeof(die));
+	ans=0;
+	for (int i=1;i<=n;i++)
+		tr[i].clear();
+	scanf("%d%lf",&n,&m);
+	for (int i=1;i<=n;i++)
+		scanf("%lf%lf",&x[i],&y[i]);
+	for (int i=1;i<=n;i++)
+		for (int j=i;j<=n;j++)
+			f1[i][j]=f1[j][i]=f[j][i]=f[i][j]= i==j?inf:sqrt(pow(x[i]-x[j],2)+pow(y[i]-y[j],2));
+	must=prim();
+	//printf(" %.2lf\n",must);
+	for (int i=1;i<=n;i++)
+		dfs1(i,i,0);
+	cnt=0;
+	dfs2(1,0);
+	for (int i=1;i<=n;i++)
+		for (int j=1;j<=n;j++)
+			if (i!=1&&j!=1&&die[i][j])
+			{
+				ans=max(f2[i][j]-f[i][j],ans);
+			}
+	ans=(must+ans)*m;
+	printf("%.2lf\n",ans);
+}
+
+int main()
+{
+	int I_am_ju_ruo_qiu_da_lao_zhi_jiao;
+	scanf("%d",&I_am_ju_ruo_qiu_da_lao_zhi_jiao);
+	while (I_am_ju_ruo_qiu_da_lao_zhi_jiao--) realmain();
+}
