@@ -1,0 +1,115 @@
+%:pragma GCC optimize(2)
+#include<cstdio>
+#include<iostream>
+#include<string>
+#include<cstring>
+#include<queue>
+#define mod 1000000007
+using namespace std;
+int n,m,a[110],l;
+char s[110];
+long long f[2][210][210][4];
+
+#define xxx 210
+int ch[xxx][2],fai[xxx],cnt,en[xxx];
+void acclear()
+{
+    memset(ch,0,sizeof(ch));
+    memset(fai,0,sizeof(fai));
+    memset(en,0,sizeof(en));
+    cnt=1;
+    ch[0][0]=ch[0][1]=1;
+}
+void add(int type)
+{
+    int p=1;
+    for (int i=1;i<=l;i++)
+    {
+        if (!ch[p][a[i]])
+            ch[p][a[i]]=++cnt;
+        p=ch[p][a[i]];
+    }
+    en[p]=1<<type;
+}
+queue<int>q;
+int nex(int p,int x)
+{
+    while (!ch[p][x]) p=fai[p];
+    return ch[p][x];
+}
+void realbuild()
+{
+    int p,x,y;
+    while (!q.empty()) q.pop();
+    q.push(1);
+    while (!q.empty())
+    {
+        p=q.front();
+        q.pop();
+        for (int i=0;i<=1;i++)
+            if (ch[p][i])
+            {
+                x=ch[p][i];
+                y=fai[p];
+                while (!ch[y][i]) y=fai[y];
+                fai[x]=ch[y][i];
+                q.push(x);
+            }
+    }
+    for (int i=cnt;i>0;i--)
+    {
+    	p=i;
+    	while (fai[p]) 
+		{
+			p=fai[p];
+			en[i]|=en[p];
+		}
+	}
+    for (int i=cnt;i>0;i--)
+    	for (int j=0;j<=1;j++)
+    		ch[i][j]=nex(i,j);
+}
+void realmain()
+{
+    scanf("%d%d\n",&n,&m);
+    acclear();
+    memset(f[0],0,sizeof(f[0]));
+    for (int i=0;i<=1;i++)
+    {
+        scanf("%s",s);
+        l=strlen(s);
+        for (int i=0;i<l;i++)
+            a[i+1]=s[i]=='D'?0:1;
+        add(i);
+    }
+    realbuild();
+    int p1,p2,pne,t;
+    f[0][0][1][0]=1;
+    for (int ttt=1;ttt<=n+m;ttt++)
+    {
+        p1=(ttt-1)%2;
+        p2=ttt%2;
+        memset(f[p2],0,sizeof(f[p2]));
+        for (int i=0;i<=n;i++)
+            for (int j=1;j<=cnt;j++)
+                for (int k=0;k<4;k++)
+                    if (f[p1][i][j][k])
+                        for (int x=0;x<=1;x++)
+                        {
+                            pne=ch[j][x];
+                            t=en[pne];
+                            f[p2][i+x][pne][k|t]=(f[p2][i+x][pne][k|t]+f[p1][i][j][k])%mod;
+                        }
+    }
+    long long ans=0;
+    for (int i=1;i<=cnt;i++)
+        ans=(ans+f[(n+m)%2][n][i][3])%mod;
+    printf("%lld\n",ans);
+}
+
+int main()
+{
+    int I_am_ju_ruo_qiu_da_lao_zhi_jiao;
+    scanf("%d",&I_am_ju_ruo_qiu_da_lao_zhi_jiao);
+    while (I_am_ju_ruo_qiu_da_lao_zhi_jiao--) realmain();
+}
