@@ -74,12 +74,8 @@ int main() {
             puts("No");
             return 0;
         }
-        Q[i].l = lower_bound(a + 1, a + m + 1, (node2) {
-            Q[i].l
-        }) - a;
-        Q[i].r = upper_bound(a + 1, a + m + 1, (node2) {
-            Q[i].r
-        }) - a - 1;
+        Q[i].l = lower_bound(a + 1, a + m + 1, (node2) {Q[i].l}) - a;
+        Q[i].r = upper_bound(a + 1, a + m + 1, (node2) {Q[i].r}) - a - 1;
     }
     sort(Q + 1, Q + n);
     Build(1, 1, m);
