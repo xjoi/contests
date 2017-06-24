@@ -11,13 +11,6 @@ inline int Read() {
 	while (c = getchar(), isdigit(c)) x = x * 10 + c - 48;
 	return x;
 }
-inline void Read(int &x) {
-	char c;
-	while (c = getchar(), !isdigit(c));
-	x = c - 48;
-	while (c = getchar(), isdigit(c)) x = x * 10 + c - 48;
-	return;
-}
 inline void Writeln(int x) {
 	int a[20], k = 0;
 	do a[++k] = x % 10;
@@ -41,11 +34,8 @@ int Gf(int k) {
 }
 int main() {
 	while (scanf("%d%d", &n, &m) == 2) {
-		for (int i = 0; i < m; ++i) {
-			Read(edge[i].u);
-			Read(edge[i].v);
-			Read(edge[i].w);
-		}
+		for (int i = 0; i < m; ++i)
+		  edge[i] = (node) {Read(), Read(), Read()};
 		cnt[w[k = 0] = 0] = 0;
 		sort(edge, edge + m);
 		for (int i = 0; i < n; ++i) {
@@ -69,8 +59,7 @@ int main() {
 		cnt[k + 1] = 0;
 		for (int i = k; i >= 0; --i)
 			cnt[i] += cnt[i + 1];
-		scanf("%d", &Q);
-		while (Q--) {
+		for (Q = Read(); Q--; ) {
 			int j = lower_bound(w, w + k + 1, Read()) - w;
 			Writeln(cnt[j]);
 		}
