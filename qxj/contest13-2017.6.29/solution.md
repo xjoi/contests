@@ -304,11 +304,11 @@ int main() {
 ## Div1. D
 
 ### Problem Description
-> 
+> 给你一个 n 个节点，根为 1 的树，每个节点有一个颜色，现在有 m 个询问 v, k，询问 节点 v 所在子树有多少种个数大于 k 的颜色。
 
 ### Solution
 > 1. 莫队算法O(n<sup>1.5</sup>)。
-> 2. 
+> 2. 平衡树启发式合并(Splay O(nlog<sub>2</sub>n),其他O(nlog<sup>2</sup>n))。
 
 ```cpp
 #include <iostream>
