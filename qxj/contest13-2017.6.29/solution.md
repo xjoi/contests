@@ -307,7 +307,7 @@ int main() {
 > 
 
 ### Solution
-> 1. 莫队算法O(n\sqrt[2]{n})。
+> 1. 莫队算法O(n<sup>1.5</sup>)。
 > 2. 
 
 ```cpp
