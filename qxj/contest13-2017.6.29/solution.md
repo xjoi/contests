@@ -227,7 +227,6 @@ int main() {
         node u = Q.front();
         Q.pop();
         int x = u.x, y = u.y, s = u.s;
-        //cerr << x << ' ' << y << ' ' << s << ' ' << d[x][y][s] << endl;
         if (x > 1) {
             if (map[x - 1][y] == 'S') {
                 int sum = -d[x][y][s] - 1;
