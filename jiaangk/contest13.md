@@ -2,7 +2,7 @@
 
 ## A
 ### Problem description
-> 我要虐题
+> 给一个杠杆 如 8==^==2，求会向哪边倾斜或者平衡
 ### Solution
 暴力暴力
 ```cpp
@@ -41,7 +41,7 @@ int main()
 ```
 ## B
 ### Problem description
-> 我要虐题
+> 几个人互相借钱，求最简化（5 3    1 2 10     2 3 1      2 4 1）
 ### Solution
 暴力暴力
 ```cpp
@@ -71,7 +71,7 @@ int main()
 
 ## D
 ### Problem description
-> 我要补题
+> 给一个01矩阵，可以自由调换每行，求最大子矩阵（1）
 ### Solution
 首先进行排序，然后用最大01矩阵的算法即可求解
 ```cpp
