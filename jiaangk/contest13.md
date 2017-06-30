@@ -1,6 +1,5 @@
 # 比赛记录
 
-[比赛链接](https://www.codeforces.com)
 ## A
 ### Problem description
 > 我要虐题
