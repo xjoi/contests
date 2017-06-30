@@ -1,0 +1,78 @@
+%:pragma GCC optimize(3)
+#include<cstdio>
+#include<iostream>
+#include<cstring>
+#include<string>
+#include<vector>
+#define xxx 1001000
+using namespace std;
+int n,m,k,cnt[300],mc[300],mct[300],num[300],a[xxx],b[xxx],ans,cg[300];
+
+bool pd(int l,int r)
+{
+	//printf("%d %d\n",l,r);for (int i=1;i<=k;i++) printf(" %d",cnt[i]);printf("\n");
+	int t=0;
+	for (int i=1;i<=k;i++)
+		if (cnt[i]>0)
+		{
+			num[i]=++t;
+			if (cnt[i]!=mct[t]) return 0;
+		}
+	//printf("a\n");
+	if (mct[t+1]>0) return 0;
+	//printf("b\n");
+	for (int i=l;i<=r;i++)
+		if (num[a[i]]!=b[i-l+1])
+			return 0;
+	return 1;
+}
+
+int main()
+{
+	int t;
+	while (scanf("%d%d%d",&n,&m,&k)==3)
+	{
+		memset(cnt,0,sizeof(cnt));
+		memset(mc ,0,sizeof(mc ));
+		memset(mct,0,sizeof(mct));
+		ans=0;
+		for (int i=1;i<=n;i++)
+			scanf("%d",&a[i]);
+		t=0;
+		for (int i=1;i<=m;i++)
+		{
+			scanf("%d",&b[i]);
+			mc[b[i]]++;
+		}
+		for (int i=1;i<=k;i++)
+			if (mc[i]>0)
+			{
+				cg[i]=++t;
+			}
+		for (int i=1;i<=m;i++)
+			b[i]=cg[b[i]];
+		for (int i=1;i<=m;i++)
+			mct[b[i]]++;
+		//for (int i=1;i<=m;i++) printf(" %d",b[i]);printf("\n");
+		for (int j=1;j<=m;j++)
+			cnt[a[j]]++;
+		for (int i=1;i<=n-m+1;i++)
+		{
+			if (i!=1)
+			{
+				cnt[a[i-1]]--;
+				cnt[a[i+m-1]]++;
+			}
+			
+			if (pd(i,i+m-1)) 
+			{
+				ans++;
+				i+=m-1;
+				memset(cnt,0,sizeof(cnt));
+				for (int j=i;j<=i+m-1;j++)
+					cnt[a[j]]++;
+			}
+		}
+		printf("%d\n",ans);
+	}
+}

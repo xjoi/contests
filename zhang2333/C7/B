@@ -1,0 +1,80 @@
+%:pragma GCC optimize(3)
+#include<cstdio>
+#include<iostream>
+#include<cstring>
+#include<string>
+#include<vector>
+#include<algorithm>
+#define xxx 10100
+#define yyy 520000
+using namespace std;
+int n,m,p;
+struct road{
+	int from,to,value;
+}r[yyy];
+long long f[xxx],ans[xxx],g;
+
+bool cmp(road r1,road r2)
+{
+	return r1.value<r2.value;
+}
+
+int fa[xxx],siz[xxx];
+int father(int x)
+{
+	if (fa[x]==x) return x;
+	fa[x]=father(fa[x]);
+	return fa[x];
+}
+int hebin(int x,int y)
+{
+	if (father(x)==father(y))
+		return 0;
+	int fx=father(x),fy=father(y);
+	ans[++g]=(long long)siz[fx]*siz[fy];
+	siz[fx]+=siz[fy];
+	fa[fy]=fx;
+	return 1;
+}
+
+
+int main()
+{
+	int x,y,z;
+	while (scanf("%d%d",&n,&m)==2)
+	{
+		for (int i=1;i<=n;i++)
+		{
+			fa[i]=i;
+			siz[i]=1;
+		}
+		g=0;
+		for (int i=1;i<=m;i++)
+		{
+			scanf("%d%d%d",&r[i].from,&r[i].to,&r[i].value);
+			r[i].from++;r[i].to++;
+		}
+		sort(r+1,r+m+1,cmp);
+		for (int i=1;i<=m;i++)
+			if (hebin(r[i].from,r[i].to))
+				f[g]=r[i].value;
+		scanf("%d",&p);
+		for (int i=g-1;i>0;i--)
+			ans[i]+=ans[i+1];
+		ans[g+1]=0;
+		if (0)
+		{
+			printf(" %d\n",g);
+			for (int i=1;i<=g;i++)
+				printf(" %lld",f[i]);printf("\n");
+			for (int i=1;i<=g;i++)
+				printf(" %lld",ans[i]);printf("\n");
+		}
+		while (p--)
+		{
+			scanf("%d",&x);
+			y=lower_bound(f+1,f+g+1,x)-f;
+			printf("%lld\n",ans[y]*2);
+		}
+	}
+}
