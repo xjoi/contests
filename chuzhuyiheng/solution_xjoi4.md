@@ -12,18 +12,59 @@
 
 ### Code
 ```cpp
-#include <bits/stdc+++.h>
-using namespace std;
-int main () {
-    printf("I want to be a master\n");
-}
+#include<cstdio>
+long long n,m,i,j,t,ans=0;
+long long a[10000000],top=0;
+int main()
+{
+    scanf("%lld%lld%lld",&n,&m,&t);
+    if (n>m)
+    {
+        i=n;n=m;m=i;
+    }
+    if(t==0)
+    {
+        while (m%n)
+        {
+            ans+=(m/n)*n;
+            m-=(m/n)*n;
+            if (n>m)
+            {
+                i=n;n=m;m=i;
+            }
+        }
+        ans+=m;
+        printf("%lld",ans);return 0;
+    }
+    while (m%n)
+    {
+        ans+=n;
+         
+        for (i=1;i<=n;i++)
+        {
+            top++;a[top]=n;
+        }
+        m-=n;
+        if (n>m)
+        {
+            i=n;n=m;m=i;
+        }
+    }
+    ans+=m;
+    printf("%lld\n",ans);
+    for (i=1;i<=(m);i++)
+        {
+            top++;a[top]=n;
+        }
+    for (i=1;i<=top;i++)printf("%lld ",a[i]);
+    return 0;
 ```
 *****
 
 
 ## B
 ### Problem description
-> 
+>给出一张图,求
 
 ### Data Limit：n <= 1e5  Time Limit: 1s
 ### Solution
