@@ -15,5 +15,5 @@
 |contest17|Y|Y|Y|A|A|X|X
 |contest18|Y|Y|Y|A|A|X|X
 |contest19|Y|Y|Y|Y|A|X|X
-|xjoi5|A|Y|Y|X|X|X|X
+|xjoi4|A|Y|Y|X|X|X|X
 |xjoi5|A|A|Y|X|X|X|X
